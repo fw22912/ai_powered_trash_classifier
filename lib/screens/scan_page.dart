@@ -60,7 +60,7 @@ class _ScanPageState extends State<ScanPage> {
               child: IconButton(
                 icon: Image.asset(
                   'assets/widgets/menu-icon.png',
-                  width: 75,
+                  width: 70,
                 ),
                 onPressed: () => _navigateToDrawer(context),
               ),
@@ -183,7 +183,7 @@ class _ScanPageState extends State<ScanPage> {
               bottom: 20,
               left: 20,
               child: IconButton(
-                icon: Image.asset('assets/icon/settings-icon.png', height: 75),
+                icon: Image.asset('assets/icon/settings-icon.png', height: 70),
                 onPressed: () {
                   _navigateToSettings(context);
                 },
@@ -192,7 +192,7 @@ class _ScanPageState extends State<ScanPage> {
             
             if (_showLearnMore)
               Positioned(
-                bottom: 150,
+                bottom: 70,
                 left: MediaQuery.of(context).size.width * 0.3,
                 right: MediaQuery.of(context).size.width * 0.3,
                 child: GestureDetector(
@@ -209,12 +209,12 @@ class _ScanPageState extends State<ScanPage> {
                     children: [
                       Image.asset(
                         'assets/widgets/outlined-btn.png',
-                        height: 90,
+                        height: 100,
                       ),
                       const Text(
                         "Learn More",
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                         ),

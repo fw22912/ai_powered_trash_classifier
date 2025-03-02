@@ -56,13 +56,13 @@ class MainPage extends StatelessWidget {
             top: 90,
             child: Image.asset(
               'assets/background/big_tree.png',
-              height: 300,
+              height: 200,
               fit: BoxFit.contain,
             ),
           ),
           // Small Tree (Right)
           Positioned(
-            right: 20,
+            right: 10,
             top: 90,
             child: Image.asset(
               'assets/background/small_tree.png',
@@ -76,7 +76,7 @@ class MainPage extends StatelessWidget {
             bottom: 0,
             child: Image.asset(
               'assets/character/panda.png',
-              height: 280,
+              height: 200,
               fit: BoxFit.contain,
             ),
           ),
@@ -86,7 +86,7 @@ class MainPage extends StatelessWidget {
             left: 20,
             bottom:20,
             child: IconButton(
-              icon: Image.asset('assets/icon/settings-icon.png', height: 75),
+              icon: Image.asset('assets/icon/settings-icon.png', height: 70),
               onPressed: () => _navigateToSettings(context),
             ),
           ),
@@ -114,12 +114,12 @@ class MainPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 200),
+                  const SizedBox(height: 150),
 
                   // Trash Classifier Text
                   Container(
                     width: double.infinity,
-                    height: 80,
+                    height: 70,
                     decoration: BoxDecoration(
                       image: const DecorationImage(
                         image: AssetImage('assets/widgets/black-btn.png'),
@@ -132,7 +132,7 @@ class MainPage extends StatelessWidget {
                         "TRASH CLASSIFIER",
                         style: TextStyle(
                           fontFamily: 'Simpsonfont',
-                          fontSize: 35,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -167,7 +167,7 @@ Widget _buildButton(String text, BuildContext context, [String? route]) {
     padding: const EdgeInsets.symmetric(vertical: 16.0), // Increased vertical padding
     child: SizedBox(
       width: double.infinity,
-      height: 80, // Increased height for larger buttons
+      height: 70,
       child: InkWell(
         onTap: () {
           if (route != null && route.isNotEmpty) {
@@ -191,7 +191,7 @@ Widget _buildButton(String text, BuildContext context, [String? route]) {
                   text,
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 40,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold, // Optional: Add bold text
                   ),
                 ),
