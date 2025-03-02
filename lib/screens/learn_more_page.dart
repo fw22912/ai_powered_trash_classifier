@@ -26,131 +26,134 @@ class LearnMorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Remove the AppBar to eliminate the black bar
       body: SafeArea(
         child: Stack(
           children: [
-            // Main Content
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 60),
-                  const Text(
-                    "Your waste belongs to...",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Center(
-                    child: Image.asset(
-                      'assets/bin/brown_bin.png', // Ensure image exists
-                      height: 200,
+            // ✅ Scrollable Content
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 60),
+                    const Text(
+                      "Your waste belongs to...",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "BROWN BIN",
-                    style: TextStyle(fontFamily: 'Simpsonfont', fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    "AI recycling advises for...",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    scannedItem.isNotEmpty ? scannedItem : "UNKNOWN ITEM",
-                    style: TextStyle(
-                      fontFamily: 'Simpsonfont',
-                      fontSize: 20, )
-                      // fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    "- Incorrectly disposed of.\n- Place in accepted compost or areas.\n- Some waste may need special handling.",
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    "AI Powered",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    "Tips and Tricks",
-                    style: TextStyle(
-                      fontFamily: 'Simpsonfont',
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    "- Proper waste disposal techniques.\n- Alternatives for composting.\n- How to minimize waste impact.",
-                  ),
-                  const SizedBox(height: 30),
-
-                  // Understood Button with Image Background
-                  Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/widgets/black-btn.png',
-                          height: 60,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/overview_page');
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
-                          ),
-                          child: const Text(
-                            "Understood!",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 10),
+                    Center(
+                      child: Image.asset(
+                        'assets/bins/green_box.png', // Ensure image exists
+                        height: 150,
+                      ),
                     ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Wrong Object or Material Button with Image Background
-                  Center(
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/widgets/outlined-btn.png', // Ensure image exists
-                          height: 60,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ScanPage()),
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            shadowColor: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
-                          ),
-                          child: const Text(
-                            "Wrong object or material?",
-                            style: TextStyle(fontSize: 18, color: Colors.black),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 20),
+                    const Text(
+                      "BROWN BIN",
+                      style: TextStyle(fontFamily: 'Simpsonfont', fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    const Text(
+                      "AI recycling advises for...",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      scannedItem.isNotEmpty ? scannedItem : "UNKNOWN ITEM",
+                      style: const TextStyle(
+                        fontFamily: 'Simpsonfont',
+                        fontSize: 20,
+                      ),
+                    ),
+                    const Text(
+                      "- Incorrectly disposed of.\n- Place in accepted compost or areas.\n- Some waste may need special handling.",
+                    ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "AI Powered",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      "Tips and Tricks",
+                      style: TextStyle(
+                          fontFamily: 'Simpsonfont',
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const Text(
+                      "- Proper waste disposal techniques.\n- Alternatives for composting.\n- How to minimize waste impact.",
+                    ),
+                    const SizedBox(height: 30),
+
+                    // Understood Button with Image Background
+                    Center(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/widgets/black-btn.png',
+                            height: 60,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/overview_page');
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
+                            ),
+                            child: const Text(
+                              "Understood!",
+                              style: TextStyle(fontSize: 18, color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Wrong Object or Material Button with Image Background
+                    Center(
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/widgets/outlined-btn.png', // Ensure image exists
+                            height: 60,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ScanPage()),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
+                            ),
+                            child: const Text(
+                              "Wrong object or material?",
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 100), // Ensure extra spacing at the bottom
+                  ],
+                ),
               ),
             ),
 
             // Top Right Menu Icon
             Positioned(
-              top: 20,
-              right: 20,
+              top: 16,
+              right: 16,
               child: IconButton(
                 icon: Image.asset(
                   'assets/widgets/menu-icon.png',
@@ -162,8 +165,8 @@ class LearnMorePage extends StatelessWidget {
 
             // Settings Button (Bottom Left)
             Positioned(
-              bottom: 20,
-              left: 20,
+              bottom: 16,
+              left: 16,
               child: IconButton(
                 icon: Image.asset(
                   'assets/icon/settings-icon.png',

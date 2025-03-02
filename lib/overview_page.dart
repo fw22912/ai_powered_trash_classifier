@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import '../widget/drawer_menu.dart';
 import '../widget/settings_page.dart';
@@ -18,6 +19,8 @@ class _OverviewPageState extends State<OverviewPage> {
   List<String> achievements = [];
   String? selectedMonth;
   String? currentYear;
+  bool _isMenuVisible = true;
+  bool _isSettingsVisible = false;
 
   final ScrollController _scrollController = ScrollController();
 
@@ -25,6 +28,38 @@ class _OverviewPageState extends State<OverviewPage> {
   void initState() {
     super.initState();
     loadFakeData();
+
+    // Listen to scrolling events
+    _scrollController.addListener(() {
+      if (_scrollController.position.userScrollDirection == ScrollDirection.reverse) {
+        // Hide the menu when scrolling down
+        if (_isMenuVisible) {
+          setState(() {
+            _isMenuVisible = false;
+          });
+        }
+      } else if (_scrollController.position.userScrollDirection == ScrollDirection.forward) {
+        // Show the menu when scrolling up
+        if (!_isMenuVisible) {
+          setState(() {
+            _isMenuVisible = true;
+          });
+        }
+      }
+      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 10) {
+        if (!_isSettingsVisible) {
+          setState(() {
+            _isSettingsVisible = true;
+          });
+        }
+      } else {
+        if (_isSettingsVisible) {
+          setState(() {
+            _isSettingsVisible = false;
+          });
+        }
+      }
+    });
   }
 
   void loadFakeData() {
@@ -78,144 +113,184 @@ class _OverviewPageState extends State<OverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
-      body: Stack(
-        children: [
-          Scrollbar(
-            thumbVisibility: true,
-            controller: _scrollController,
-            thickness: 8,
-            radius: const Radius.circular(10),
-            child: ListView(
-              controller: _scrollController,
-              physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              children: [
-                // Waste Log Section
-                Container(
-                  color: Colors.grey[200],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 80),
+              child: Scrollbar(
+                thumbVisibility: true,
+                controller: _scrollController,
+                thickness: 8,
+                radius: const Radius.circular(10),
+                child: ListView(
+                  controller: _scrollController,
+                  physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-
-                      // Waste Log & Achievements Title Box
-                      Container(
-                        color: Colors.grey[300], // Background color for the title box
-                        padding: const EdgeInsets.all(16),
-                        child: const Text(
-                          'Waste Log & Achievements',
+                  children: [
+                    // Waste Log Title Section (With Background Image)
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/widgets/black-btn.png'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(16),
+                      child: const Center(
+                        child: Text(
+                          'Waste Log',
                           style: TextStyle(
+                            fontFamily: 'Simpsonfont',
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
                         ),
                       ),
+                    ),
 
-                      Text(
-                        '$currentYear Monthly Overview',
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Monthly Overview (Tap a Bar for Details)',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        height: 250,
-                        child: buildMonthlyBarChart(),
-                      ),
-                      if (selectedMonth != null) ...[
-                        const SizedBox(height: 20),
-                        Text(
-                          '${getMonthName(selectedMonth!)} Category Breakdown',
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: 200,
-                          child: buildCategoryBarChart(),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
+                    const SizedBox(height: 20), // Spacing before the charts
 
-                // Achievements Section (Below)
-                Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'ACHIEVEMENTS',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    // Monthly Overview Section (Charts)
+                    Container(
+                      color: Colors.grey[200],
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        children: [
+                          Text(
+                            '$currentYear Monthly Overview',
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 12),
+                          const Text(
+                            'Monthly Overview (Tap a Bar for Details)',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 250,
+                            child: buildMonthlyBarChart(),
+                          ),
+                          if (selectedMonth != null) ...[
+                            const SizedBox(height: 20),
+                            Text(
+                              '${getMonthName(selectedMonth!)} Category Breakdown',
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 200,
+                              child: buildCategoryBarChart(),
+                            ),
+                          ],
+                        ],
                       ),
-                      const SizedBox(height: 12),
-                      if (achievements.isEmpty)
-                        const Center(child: Text('No achievements yet.')),
-                      if (achievements.isNotEmpty)
-                        ListView.builder(
-                          itemCount: achievements.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return Card(
-                              margin: const EdgeInsets.symmetric(vertical: 8),
-                              child: ListTile(
-                                leading: const Icon(Icons.star, color: Colors.amber),
-                                title: Text(
-                                  achievements[index],
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                    ),
+
+                    const SizedBox(height: 20), // Spacing before achievements
+
+                    // Achievements Section
+                    Container(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/widgets/black-btn.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            padding: const EdgeInsets.all(16),
+                            child: const Center(
+                              child: Text(
+                                'Achievements',
+                                style: TextStyle(
+                                  fontFamily: 'Simpsonfont',
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          if (achievements.isEmpty)
+                            const Center(child: Text('No achievements yet.')),
+                          if (achievements.isNotEmpty)
+                            ListView.builder(
+                              itemCount: achievements.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  margin: const EdgeInsets.symmetric(vertical: 8),
+                                  child: ListTile(
+                                    leading: const Icon(Icons.star, color: Colors.amber),
+                                    title: Text(
+                                      achievements[index],
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          const SizedBox(height: 50),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-
-          // Top Right Menu Icon
-          Positioned(
-            top: 20,
-            right: 20,
-            child: IconButton(
-              icon: Image.asset(
-                'assets/widgets/menu-icon.png',
-                width: 75,
               ),
-              onPressed: () => _navigateToDrawer(context),
             ),
-          ),
 
-          // Settings Button (Bottom Left)
-          Positioned(
-            bottom: 20,
-            left: 20,
-            child: IconButton(
-              icon: Image.asset(
-                'assets/icon/settings-icon.png',
-                height: 75,
+            Positioned(
+              top: 10,
+              right: 10,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _isMenuVisible ? 1.0 : 0.0, // Hide when scrolling down
+                child: IconButton(
+                  icon: Image.asset(
+                    'assets/widgets/menu-icon.png',
+                    width: 70, // Keep the size
+                  ),
+                  onPressed: () => _navigateToDrawer(context),
+                ),
               ),
-              onPressed: () => _navigateToSettings(context),
             ),
-          ),
-        ],
+
+            // Settings Icon (Bottom Left)
+            Positioned(
+              bottom: 10,
+              left: 10,
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 300),
+                opacity: _isSettingsVisible ? 1.0 : 0.0, // Appears only at the bottom
+                child: IconButton(
+                  icon: Image.asset(
+                    'assets/icon/settings-icon.png',
+                    height: 70,
+                  ),
+                  onPressed: () => _navigateToSettings(context),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
+
   Widget buildMonthlyBarChart() {
     return BarChart(
       BarChartData(
